@@ -22,7 +22,7 @@ jobs:
       - name: Build container
         run: |
           mkdir -p output
-          apptainer build --fakeroot output/container.sif ubuntu.def
+          sudo apptainer build output/container.sif ubuntu.def
 
       - name: Verify container
         run: |
