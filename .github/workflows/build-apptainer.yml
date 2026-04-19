@@ -14,27 +14,32 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Show Apptainer version
-        run: apptainer --version
-
-      - name: Find def file
-        run: find . -name "*.def"
-
-      - name: Build container
         run: |
-          mkdir -p output
-          apptainer build --fakeroot output/container.sif ubuntu.def
+          apptainer --version > output.txt
+          ls output.txt
+          cat output.txt
 
-      - name: Verify container
+      # - name: Build container
+      #   run: |
+      #     mkdir -p output
+      #     apptainer build --fakeroot output/container.sif ubuntu.def
+
+      # - name: Verify container
+      #   run: |
+      #     apptainer inspect output/container.sif
+
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: apptainer-image
+      #     path: output/container.sif
+
+      - name: Remove full workspace
         run: |
-          apptainer inspect output/container.sif
+          rm -rf "$GITHUB_WORKSPACE"/*
+          rm -rf "$GITHUB_WORKSPACE"/.git
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: apptainer-image
-          path: output/container.sif
-
-      - name: cleaning files
-        uses: actions/checkout@v4
-        with:
-          clean: true
+      # - name: cleaning files
+      #   uses: actions/checkout@v4
+      #   with:
+      #     clean: true
