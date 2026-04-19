@@ -1,0 +1,42 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%post
+    set -eux
+
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get install -y wget ca-certificates tar python3-venv
+
+    # install python venv (if you need it)
+    python3 -m venv /opt/venv
+    #/opt/venv/bin/pip install --no-cache-dir numpy || true
+
+    # install Julia from official tarball (no juliaup)
+    JULIA_VER=1.12.1
+    ARCH=x86_64-linux-gnu
+    mkdir -p /opt/julia
+    wget -qO /tmp/julia.tar.gz "https://julialang-s3.julialang.org/bin/linux/x64/1.12/julia-1.12.1-linux-x86_64.tar.gz"
+    tar -xzf /tmp/julia.tar.gz -C /opt/julia --strip-components=1
+    ln -sf /opt/julia/bin/julia /usr/local/bin/julia
+    rm -f /tmp/julia.tar.gz
+
+    # create a system depot for packages and precompiles so runtime is read-only safe
+    JULIA_DEPOT=/opt/julia_depot
+    mkdir -p ${JULIA_DEPOT}
+    chown -R root:root ${JULIA_DEPOT}
+    export JULIA_DEPOT_PATH=${JULIA_DEPOT}
+
+    # Install packages non-interactively and precompile into system depot
+    export JULIA_DEPOT_PATH=${JULIA_DEPOT}
+    julia --version
+    julia -e 'using Pkg; Pkg.add.(["IJulia","Plots","DataFrames"]); Pkg.precompile()'
+
+    # cleanup
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+    echo "finished"
+
+%environment
+    PATH=/opt/julia/bin:/opt/venv/bin:$PATH
+    JULIA_DEPOT_PATH=/opt/julia_depot
+
+%runscript
