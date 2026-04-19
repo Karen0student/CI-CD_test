@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted-docker-TMP   # your local runner
+    runs-on: Self-hosted   # your local runner
 
     steps:
       - name: Checkout repo
