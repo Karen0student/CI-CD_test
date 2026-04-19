@@ -33,3 +33,7 @@ jobs:
         with:
           name: apptainer-image
           path: output/container.sif
+
+      - uses: actions/checkout@v4
+        with:
+          clean: true
