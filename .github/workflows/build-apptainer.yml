@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: Self-hosted   # your local runner
+    runs-on: git-runner-tmp   # your local runner
 
     steps:
       - name: Checkout repo
