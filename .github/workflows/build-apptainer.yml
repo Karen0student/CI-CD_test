@@ -16,6 +16,9 @@ jobs:
       - name: Show Apptainer version
         run: apptainer --version
 
+      - name: Find def file
+        run: find . -name "*.def"
+
       - name: Build container
         run: |
           mkdir -p output
