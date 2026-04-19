@@ -19,7 +19,7 @@ jobs:
       - name: Build container
         run: |
           mkdir -p output
-          sudo apptainer build output/container.sif apptainer.def
+          sudo apptainer build output/container.sif ubuntu.def
 
       - name: Verify container
         run: |
