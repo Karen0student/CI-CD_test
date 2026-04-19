@@ -35,8 +35,10 @@ jobs:
       #     path: output/container.sif
 
       - name: Remove full workspace
-        run: rm -rf "$GITHUB_WORKSPACE"
-          # rm -rf "$GITHUB_WORKSPACE"/.git
+        run: |
+          rm -rf "$GITHUB_WORKSPACE""/*"
+          rm -rf "$GITHUB_WORKSPACE"/.git
+          rm -rf "$GITHUB_WORKSPACE"/.github
 
       # - name: cleaning files
       #   uses: actions/checkout@v4
