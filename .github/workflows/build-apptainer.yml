@@ -1,0 +1,32 @@
+name: Build Apptainer Image
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: self-hosted   # your local runner
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Show Apptainer version
+        run: apptainer --version
+
+      - name: Build container
+        run: |
+          mkdir -p output
+          sudo apptainer build output/container.sif apptainer.def
+
+      - name: Verify container
+        run: |
+          apptainer inspect output/container.sif
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apptainer-image
+          path: output/container.sif
