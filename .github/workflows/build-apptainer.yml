@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: git-runner-tmp   # your local runner
+    runs-on: self-hosted #git-runner-tmp   # your local runner
 
     steps:
       - name: Checkout repo
@@ -33,6 +33,12 @@ jobs:
       #   with:
       #     name: apptainer-image
       #     path: output/container.sif
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: output.txt
 
       - name: Remove full workspace
         run: |
