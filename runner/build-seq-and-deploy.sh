@@ -1,7 +1,10 @@
 docker build -t my-runner-image . &&
 
-for i in $(seq 1 1); do
+NUM_OF_CONTAINERS=1
+
+for i in $(seq 1 $NUM_OF_CONTAINERS); do
   docker run -d --privileged \
+    --rm \
     --name runner-$i \
     --cpus="2" \
     --memory="4g" \
